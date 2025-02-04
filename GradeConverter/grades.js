@@ -9,18 +9,18 @@ while (grade != 999) {
     }
     if (grade < 60){
         letter_grade = 'F'
-        console.log(letter_grade);
+        document.write(`Grade ${grade}=${letter_grade}<br><br>`);
     }else if (grade >= 60 && grade < 68){
         letter_grade = 'D'
-        console.log(letter_grade);
+        document.write(`Grade ${grade}=${letter_grade}<br><br>`);
     }else if (grade >= 68 && grade < 80){
         letter_grade = 'C'
-        console.log(letter_grade);
+        document.write(`Grade ${grade}=${letter_grade}<br><br>`);
     }else if (grade >= 80 && grade < 88){
         letter_grade = 'B'
-        console.log(letter_grade);
+        document.write(`Grade ${grade}=${letter_grade}<br><br>`);
     }else if (grade >= 88 && grade < 100){
         letter_grade = 'A'
-        console.log(letter_grade);
+        document.write(`Grade ${grade}=${letter_grade}<br><br>`);
     }
 }
