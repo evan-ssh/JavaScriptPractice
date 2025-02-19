@@ -10,3 +10,16 @@ const processEntry = () => {
     }
 }:
 
+const makeChange = amount => {
+    const quarters = parseInt(amount / 25);
+    amount = amount % 25;
+    const dimes = parseInt(amount / 10);
+    amount = amount % 10;
+    const nickels = parseInt(amount / 5);
+    const pennies = amount % 5;
+
+    $("quarters").value = quarters;
+    $("dimes").value = dimes;
+    $("nickels").value = nickels;
+    $("pennies").value = pennies;
+};
