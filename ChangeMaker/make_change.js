@@ -8,7 +8,7 @@ const processEntry = () => {
     } else {
         makeChange(amount);
     }
-}:
+};
 
 const makeChange = amount => {
     const quarters = parseInt(amount / 25);
@@ -23,3 +23,14 @@ const makeChange = amount => {
     $("nickels").value = nickels;
     $("pennies").value = pennies;
 };
+
+const focusAndSelect = selector => {
+    const elem = $(selector);
+    elem.focus();
+    elem.select();
+}
+
+document.addEventListener("DOMContentLoaded", () => { 
+    $("calculate").addEventListener("click", processEntry);
+    $("amount").focus();
+});
