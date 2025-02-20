@@ -1,6 +1,6 @@
 const $ = selector => document.querySelector(selector);
 
-const processEntry = () => {
+const processEntry = function() {
     const cents = parseInt($("#cents").value);
     if(isNaN(cents) || cents < 0 || cents > 99) {
         alert("Amount must be a valid number between 0 and 99");
@@ -10,7 +10,7 @@ const processEntry = () => {
     }
 };
 
-const makeChange = cents => {
+const makeChange = function(cents) {
     const quarters = parseInt(cents / 25);
     cents = cents % 25;
     const dimes = parseInt(cents / 10);
