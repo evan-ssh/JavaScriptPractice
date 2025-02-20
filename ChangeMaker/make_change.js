@@ -1,27 +1,27 @@
 const $ = selector => document.querySelector(selector);
 
 const processEntry = () => {
-    const amount = parseInt($("amount").value);
-    if(isNaN(amount) || amount< 0 || amount > 99) {
+    const cents = parseInt($("#cents").value);
+    if(isNaN(cents) || cents < 0 || cents > 99) {
         alert("Amount must be a valid number between 0 and 99");
-        $("amount").focus();
+        focusAndSelect("#cents");
     } else {
-        makeChange(amount);
+        makeChange(cents);
     }
 };
 
-const makeChange = amount => {
-    const quarters = parseInt(amount / 25);
-    amount = amount % 25;
-    const dimes = parseInt(amount / 10);
-    amount = amount % 10;
-    const nickels = parseInt(amount / 5);
-    const pennies = amount % 5;
+const makeChange = cents => {
+    const quarters = parseInt(cents / 25);
+    cents = cents % 25;
+    const dimes = parseInt(cents / 10);
+    cents = cents % 10;
+    const nickels = parseInt(cents / 5);
+    const pennies = cents % 5;
 
-    $("quarters").value = quarters;
-    $("dimes").value = dimes;
-    $("nickels").value = nickels;
-    $("pennies").value = pennies;
+    $("#quarters").value = quarters;
+    $("#dimes").value = dimes;
+    $("#nickels").value = nickels;
+    $("#pennies").value = pennies;
 };
 
 const focusAndSelect = selector => {
@@ -31,6 +31,6 @@ const focusAndSelect = selector => {
 }
 
 document.addEventListener("DOMContentLoaded", () => { 
-    $("calculate").addEventListener("click", processEntry);
-    $("amount").focus();
+    $("#calculate").addEventListener("click", processEntry);
+    $("#cents").focus();
 });
