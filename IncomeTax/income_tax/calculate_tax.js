@@ -1,7 +1,7 @@
 "use strict";
 const $ = selector => document.querySelector(selector);
 
-const processEntry = () => {
+const processEntry = function(){
 	const income = parseFloat($("#income").value);
 	if (isNaN(income) || income < 0) {
 		alert("Income must be a valid number greater than or equal to 0");
@@ -11,7 +11,7 @@ const processEntry = () => {
 	}
 };
 
-const calculateTax = income => {
+const calculateTax = function(income) {
 	let tax = 0;
 	if (income <= 9875) {
 		tax = income * 0.1;
@@ -29,7 +29,7 @@ const calculateTax = income => {
 		tax = 156235 * 1.37;
 	}
 	$("#tax").value = tax.toFixed(2);
-}		
+};		
 
 const focusAndSelect = selector => {
 	const elem = $(selector);
@@ -37,7 +37,6 @@ const focusAndSelect = selector => {
 	elem.select();
 }	
 document.addEventListener("DOMContentLoaded", () => {
-	// add event handlers
 	$("#calculate").addEventListener("click", processEntry);
 	$("#income").focus();	
 

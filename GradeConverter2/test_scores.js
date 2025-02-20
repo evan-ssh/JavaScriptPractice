@@ -5,7 +5,7 @@ const scores = [];
 const $ = selector => document.querySelector(selector);
 
 
-const addScore = function() {
+const addScore = () => {
     const score = parseInt($("#score").value);
     if (score >= 0 && score <= 100) {
         scores[scores.length] = score;
@@ -18,7 +18,7 @@ const addScore = function() {
     $("#score").focus();
 };
 
-const calculateAverage = function() {
+const calculateAverage = () => {
     let total = 0;
     for (let val of scores) {
         total = total + val;

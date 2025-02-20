@@ -16,7 +16,7 @@ const clearField = selector => {
     focusAndSelect(selector);
 };
 
-const processEntries = () => {
+const processEntries = function() {
     const subtotal = parseFloat($("#subtotal").value);
     const taxRate = parseFloat($("#tax_rate").value);
     
