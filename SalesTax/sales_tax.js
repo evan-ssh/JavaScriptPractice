@@ -38,7 +38,7 @@ const clearAllFields = () => {
     $("#subtotal").value = "";
     $("#tax_rate").value = "";
     $("#sales_tax").value = "";
-    $("#total").focus();
+    $("#total").value = "";
     focusAndSelect("#subtotal");
 };
 

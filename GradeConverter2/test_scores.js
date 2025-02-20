@@ -20,8 +20,8 @@ const addScore = () => {
 
 const calculateAverage = () => {
     let total = 0;
-    for (let val of scores) {
-        total = total + val;
+    for (let num of scores) {
+        total += num;
     }
     return parseInt(total / scores.length);
 };
