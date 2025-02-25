@@ -30,4 +30,26 @@ while (i > 50){
     console.log(i)
     i ++
 }
-    
+
+let grade = 90
+
+if (i < 50){
+    console.log("Sorry u did not pass")
+}else{
+    console.log("Congratulations you passed!")
+};
+
+//Grade converter example of if elif else
+if (i > 0 && i <= 20){
+    console.log("You received a F")
+}else if (i > 20 && i <= 40){
+    console.log("You received a D")
+}else if (i > 40 && i <= 60){
+    console.log("You received a C")
+}else if (i > 60 && i <= 80){
+    console.log("You received a B")
+}else if (i > 80 && i <= 100){
+    console.log("You received a A")
+}else{
+    console.log("Invalid grade")
+}
