@@ -9,3 +9,14 @@ do{
     console.log(i)
     i += 2
 }while (i < 6);
+
+i = 10;
+do {
+    console.log(i)
+    i --
+}while (i > 0)
+
+do { 
+    console.log(i)
+    i -= 2
+}while (i > 0)
