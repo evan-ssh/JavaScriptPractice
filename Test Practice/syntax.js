@@ -58,6 +58,8 @@ if (i > 0 && i <= 20){
     console.log("Invalid grade")
 }
 
+//For Loop
+
 // for (initialize counter; condition; what we are updating by){
 // code to be ran
 //}
@@ -70,3 +72,9 @@ numbers = [1,2,3,4,5]
 for(let num of numbers){
     console.log(num)
 }
+
+//append to list = push()
+
+let numbers = [1,2,3,4,5]
+numbers.push(6)
+console.log(numbers)
