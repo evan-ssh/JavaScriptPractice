@@ -1,3 +1,5 @@
+
+// While loops
 let i = 0
 
 do {
@@ -31,6 +33,8 @@ while (i > 50){
     i ++
 }
 
+
+//If else statments
 let grade = 90
 
 if (i < 50){
@@ -52,4 +56,17 @@ if (i > 0 && i <= 20){
     console.log("You received a A")
 }else{
     console.log("Invalid grade")
+}
+
+// for (initialize counter; condition; what we are updating by){
+// code to be ran
+//}
+
+for(let i = 1; i <= 30; i ++){
+    console.log(i)
+}
+
+numbers = [1,2,3,4,5]
+for(let num of numbers){
+    console.log(num)
 }
