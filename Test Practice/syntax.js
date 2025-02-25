@@ -18,5 +18,16 @@ do {
 
 do { 
     console.log(i)
-    i -= 2
+    i -= 2 // post decrement operator
 }while (i > 0)
+
+while (i > 0){
+    console.log(i)
+    i --
+}
+
+while (i > 50){
+    console.log(i)
+    i ++
+}
+    
