@@ -77,6 +77,14 @@ let number = parseInt(prompt("Enter a number"))
 for (let i = 1; i <= number; i++){
     console.log(i)
 }
+
+numbers = [1,2,3,4,5,6]
+total = 0
+for(let num of numbers){
+    total += num
+}
+console.log(total)
+
 //append to list = push()
 
 let numbers = [1,2,3,4,5]
