@@ -108,13 +108,21 @@ for(let i = 1; i <= number; i ++){
 }
 
 let number = parseInt(prompt("Enter the number"))
-factorial = 1
+let factorial = 1
 for(let i = 1; i <= number; i++){
     factorial *= i
 }
-console.log(factorial
-    
-)
+
+
+console.log(factorial)
+
+let number = parseInt(prompt("Enter numbers to generate"))
+squares = []
+for(let i = 1; i <= number; i++){
+    squares.push(i * i)
+}
+console.log(squares)
+
 console.log(total)
 //append to list = push()
 
