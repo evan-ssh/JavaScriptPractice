@@ -13,6 +13,7 @@ const total = score1 + score2 + score3 + score4;
 // calculate the average
 const average = parseInt(total/4);
 
+message = alert(`score1 = ${score1}\nscore2 = ${score2}\nScore3 = ${score3}\nTotal = ${total}\n\nAverage = ${average}`) 
 // display in browser page
 const html = `<p>Score 1 = ${score1}</p>
     <p>Score 2 = ${score2}</p>
