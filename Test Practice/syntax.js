@@ -85,6 +85,8 @@ for(let num of numbers){
 }
 console.log(total)
 
+///
+
 let numbers = []
 let number = parseInt(prompt("Enter a number"))
 total = 0
@@ -95,6 +97,16 @@ for(let i = 1; i <= number; i++){
 for(let num of numbers){
     total += num
 }
+
+let number = 10
+for(let i = 1; i <= number; i ++){
+    if(i % 2 == 0){
+        console.log(i)
+    }else{
+        console.log("Not even")
+    }
+}
+
 
 console.log(total)
 //append to list = push()
