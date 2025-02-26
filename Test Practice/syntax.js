@@ -73,6 +73,10 @@ for(let num of numbers){
     console.log(num)
 }
 
+let number = parseInt(prompt("Enter a number"))
+for (let i = 1; i <= number; i++){
+    console.log(i)
+}
 //append to list = push()
 
 let numbers = [1,2,3,4,5]
