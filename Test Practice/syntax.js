@@ -107,7 +107,14 @@ for(let i = 1; i <= number; i ++){
     }
 }
 
-
+let number = parseInt(prompt("Enter the number"))
+factorial = 1
+for(let i = 1; i <= number; i++){
+    factorial *= i
+}
+console.log(factorial
+    
+)
 console.log(total)
 //append to list = push()
 
