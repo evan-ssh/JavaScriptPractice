@@ -1,0 +1,38 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <button id="highlightBtn">Highlight Paragraphs</button>
+        <button id="RemoveLast">Remove last paragraph</button>
+
+        <p>This is the first paragraph.</p>
+        <p>This is the second paragraph.</p>
+        <p>This is the third paragraph.</p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+
+            const button = document.getElementById("highlightBtn")
+            const remove = document.getElementById("RemoveLast")
+            
+            button.addEventListener("click", function(){
+                const paragraphs = document.querySelectorAll("p")
+                paragraphs.forEach(element => {
+                element.style.background = `red`
+            });
+            });
+            remove.addEventListener("click", function(){
+                const paragraphs = document.querySelectorAll("p")
+                if(paragraphs.length > 1){
+                    const LastPara = paragraphs[paragraphs.length - 1]
+                    LastPara.parentNode.removeChild(LastPara)
+               }
+            })
+
+            
+        })
+       
+    </script>
+    </body>
+</html>
