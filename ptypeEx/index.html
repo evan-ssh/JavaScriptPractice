@@ -1,0 +1,15 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <input type="text" id="myInput" placeholder="Type here...">
+        <p id="myPara"></p>
+    </body>
+</html>
+
+<script>
+document.getElementById("myInput").addEventListener("input", function() {
+    document.getElementById("myPara").textContent = this.value;
+});
+</script>
