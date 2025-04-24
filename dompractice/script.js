@@ -10,7 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const heading = document.createElement("h2");
         heading.textContent = "Test"
         heading.style.color = "darkblue"
-
+        div.title = "Hidden message"
+        const fruits = ["apple","banana","cherry"];
+        const ul = document.createElement("ul")
+        fruits.forEach(fruit => {
+            const li = document.createElement("li")
+            li.textContent = fruit
+            ul.appendChild(li)
+        })
+        div.append(ul)
         div.appendChild(heading)
         document.body.appendChild(div)
 
@@ -23,7 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     })
 
-        
+    div.addEventListener("click", function(){
+        div.style.background = "Black"
+    })
         
     })
 })

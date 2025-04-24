@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>Button Click Change Text</title>
+    </head>
+    <body>
+        <button type="submit" id="button1">Change Text</button>
+        <button type="submit" id="button2">Create new paragraph</button>
+        <p id="paragraph1">waiting....</p>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(){
+                const button1 = document.getElementById("button1")
+                const paragraph = document.getElementById("paragraph1")
+                const button2 = document.getElementById("button2")
+                button1.addEventListener("dblclick", function(){
+                    
+                    paragraph.textContent = "Button was clicked "
+                })
+                paragraph.addEventListener("mouseover", function(){
+                    paragraph.style.background = "red"
+                })
+                paragraph.addEventListener("mouseout", function(){
+                    paragraph.style.background = "white"
+
+                })
+                button2.addEventListener("click", function(){
+                    div = document.createElement("div")
+                    
+                    h2 = document.createElement("h2")
+                    p = document.createElement("p")
+                    h2.textContent = "New paragraph"
+                    p.textContent = "paragraph was sucessfully made"
+                    div.appendChild(h2)
+                    div.appendChild(p)
+                    document.body.appendChild(div)
+
+                    div.addEventListener("mouseover", function(){
+                        div.style.background = "red"
+                    })
+                    
+                    div.addEventListener("mouseout", function(){
+                        div.style.background = "white"
+                    })
+                })
+            })
+        </script>
+    </body>
+    
+</html>
