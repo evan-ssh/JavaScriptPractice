@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function(){
     const textfield1 = document.getElementById("textfield1")
     const eventInfo = document.getElementById("eventInfo")
     const randomMessage = "Randon Message"
+    
     button1.addEventListener("click", function(){
         eventInfo.textContent += randomMessage
     })
