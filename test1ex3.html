@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">	
+    <title>Price Calculator</title>
+    <link rel="stylesheet" href="login.css">
+    <script></script>
+</head>
+<body>
+    <main>
+        <h1>Simple Calculator</h1>
+       
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price"><br>
+
+            <label for="rate">Tax Rate:</label>
+            <input type="text" id="rate" name="rate"><br>
+            
+            <label>&nbsp;</label>
+            <input type="button" id="calculate" value="calculate">
+            
+            <label>&nbsp;</label>
+            <input type="button" id="reset" value="reset">
+            
+            <label for="total">Total Price:</label>
+            <input disabled type="text" id="total" name="total"><br>
+    </main>
+    <script>
+        const price = document.getElementById("price")
+        const rate = document.getElementById("rate")
+        const calculate = document.getElementById("calculate")
+        const reset = document.getElementById("reset")
+        const total = document.getElementById("total")
+        calculate.addEventListener("click", function(){
+            let priceValid = true
+            let rateValid = true
+            const priceValue = parseFloat(price.value)
+            const rateValue = parseFloat(rate.value)
+            if (isNaN(priceValue) || priceValue <= 0){
+                alert(`price is invalid enter a number grater than 0`)
+                priceValid = false
+            }
+
+            if(isNaN(rateValue) || rateValue < 2 || rateValue > 12){
+                alert(`The tax rate must be a valid number between 2 and 12`)
+               rateValid = false
+            }
+
+            if(priceValid && rateValid){
+               const ans = priceValue * (1 + rateValue / 100)
+               total.value = ans.toFixed(2)
+            }else{
+                alert(`Price or rate enetered is invalid`)
+            }
+        });
+
+        reset.addEventListener("click", function(){
+            price.value = ''
+            rate.value = ''
+            total.value = ''
+            price.focus()
+        });
+            
+            
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+    <script>
+        const startNum = parseInt(prompt("Enter the start number"))
+        const endNum = parseInt(prompt("Enter an end number"))
+        let numbers = []
+        for(let i = startNum; i <= endNum; i++){
+            numbers.push(i)
+        }
+        let totalValue = 0
+        numbers.forEach(element => {
+            totalValue += element
+        });
+        alert(`The total of the values from ${startNum} to ${endNum} is ${totalValue}`)
+    </script>
+    </body>
+</html>

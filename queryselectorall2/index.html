@@ -1,0 +1,27 @@
+<button id="toggleBtn">Toggle List Style</button>
+
+<ul>
+  <li>Apples</li>
+  <li>Bananas</li>
+  <li>Cherries</li>
+</ul>
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const button = document.getElementById("toggleBtn")
+        button.addEventListener("click", function(){
+            lists = document.querySelectorAll("li")
+            lists.forEach(element => {
+                element.classList.toggle(`fancy`)
+            });
+        })
+    })
+</script>
+<style>
+  .fancy {
+    color: white;
+    background-color: teal;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+  }
+</style>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">	
+    <title>Simple Calculator</title>
+    <link rel="stylesheet" href="login.css">
+    <script></script>
+</head>
+<body>
+    <main>
+        <h1>Simple Calculator</h1>
+       
+            <label for="value1">Value 1:</label>
+            <input type="text" id="value1" name="value1"><br>
+
+            <label for="value2">Value 2:</label>
+            <input type="text" id="value2" name="value2"><br>
+
+            <label>&nbsp;</label>
+            <input type="button" id="add" value="add">
+            <label>&nbsp;</label>
+            <input type="button" id="sub" value="subtract">
+             <label>&nbsp;</label>
+            <input type="button" id="mult" value="multiply">
+            <label>&nbsp;</label>
+            <input type="button" id="div" value="divide">
+			 <label>&nbsp;</label>
+			<input type="button" id="reset" value="reset">
+            
+            <label for="result">result:</label>
+            <input disabled type="text" id="result" name="result"><br>
+
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            textbox1 = document.getElementById("value1")
+            textbox2 = document.getElementById("value2")
+            add = document.getElementById("add")
+            sub = document.getElementById("sub")
+            mult = document.getElementById("mult")
+            div = document.getElementById("div")
+            reset = document.getElementById("reset")
+            result = document.getElementById("result")
+            textbox1.focus()
+            add.addEventListener("click", function(){
+                value1 = parseFloat(textbox1.value)
+                value2 = parseFloat(textbox2.value)
+                answer = value1 + value2
+                result.value = answer
+
+            })
+            sub.addEventListener("click", function(){
+                value1 = parseFloat(textbox1.value)
+                value2 = parseFloat(textbox2.value)
+                answer = value1 - value2
+                result.value = answer
+            })
+            mult.addEventListener("click", function(){
+                value1 = parseFloat(textbox1.value)
+                value2 = parseFloat(textbox2.value)
+                answer = value1 * value2
+                result.value = answer
+
+            })
+            div.addEventListener("click", function(){
+                value1 = parseFloat(textbox1.value)
+                value2 = parseFloat(textbox2.value)
+                answer = value1 / value2
+                result.value = answer
+
+            })
+
+            reset.addEventListener("click", function(){
+                textbox1.value = ''
+                textbox2.value = ''
+                result.value = ''
+                textbox1.focus()
+            })
+
+        })
+    </script>
+</body>
+</html>

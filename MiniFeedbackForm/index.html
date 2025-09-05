@@ -1,0 +1,81 @@
+<h2>Leave Your Feedback</h2>
+
+<form id="feedbackForm">
+  <input type="text" id="name" placeholder="Your name" />
+  <input type="email" id="email" placeholder="Your email" />
+  <textarea id="message" placeholder="Your message"></textarea>
+  <button type="submit">Submit</button>
+</form>
+
+<p id="errorMsg" style="color: red;"></p>
+
+<h3>Feedback Received:</h3>
+<ul id="feedbackList"></ul>
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const form = document.getElementById("feedbackForm")
+        const name = document.getElementById("name")
+        const email = document.getElementById("email")
+        const message = document.getElementById("message")
+        const submit = document.getElementById("submit")
+        const ul = document.getElementById("feedbackList")
+        let formValid = true
+
+        if(name.value.length <= 0){
+            formValid = false
+            name.classList.toggle("error")
+        }else{
+            name.classList.remove("error")
+        }
+
+        if(email.value.length <= 0){
+            formValid == false
+            email.classList.toggle("error")
+        }else{
+            email.classList.remove("error")
+        }
+
+        if(message.value.length <= 0){
+            formValid == false
+            message.classList.toggle("error")
+        }else{
+            message.classList.remove("error")
+        }
+
+        
+        if(formValid){
+            const li = document.createElement("li")
+            li.textContent = `${name}(${email}): ${message}`;
+            const deleteBtn = document.createElement("button")
+            deleteBtn.textContent = `Delete`
+            deleteBtn.addEventListener("click", function(){
+                li.remove()
+            })
+            li.appendChild(deleteBtn)
+            ul.appendChild(li)
+        }
+    })
+</script>
+<style>
+  .error {
+    border: 2px solid red;
+  }
+  .entry {
+    background-color: #f1f1f1;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    position: relative;
+  }
+  .delete-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: crimson;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 3px 8px;
+    cursor: pointer;
+  }
+</style>

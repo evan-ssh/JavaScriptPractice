@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<div id="article">
+    <h2 id="title">My Article</h2>
+    <p id="content">This is the first paragraph of the article.</p>
+    <button id="editBtn">Edit Title</button>
+    <button id="addParaBtn">Add Paragraph</button>
+    <button id="removeParaBtn">Remove Paragraph</button>
+</div> 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const edit = document.getElementById("editBtn")
+        const add = document.getElementById("addParaBtn")
+        const remove = document.getElementById("removeParaBtn")
+        const header = document.getElementById("title")
+        const paragraph = document.getElementById("content")
+        const div = document.getElementById("article")
+        edit.addEventListener("click", function(){
+            header.textContent = `Updated Article Title`
+        });
+
+        add.addEventListener("click", function(){
+            const p = document.createElement("p")
+            p.textContent = `Today I need to buy the following fruits:`;
+            const ul = document.createElement("ul")
+            const fruits = [`Apples`,`Bananas`,`Oranges`]
+            fruits.forEach(fruit =>{
+                const li = document.createElement("li")
+                li.textContent = fruit
+                ul.appendChild(li)
+            })
+            p.appendChild(ul)
+            div.appendChild(p)
+
+        })
+        remove.addEventListener("click", function(){
+            const paragraphs = article.querySelectorAll('p');
+
+            if (paragraphs.length > 1){ 
+                article.removeChild(paragraphs[paragraphs.length - 1]) // remove the last added 
+            }
+        })
+    })
+</script>
+
+</body>
+</html>
