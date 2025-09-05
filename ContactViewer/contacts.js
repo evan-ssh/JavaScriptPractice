@@ -17,10 +17,25 @@ function displayMenu(){
 
 while(true){
    let command = prompt(displayMenu())
-   if(command == "list"){
+   if(command == null){
+    window.close();
+    break;
+   }
+   if(command == "exit"){
+        break
+   }else if(command == "list"){
+    let contactNames = []
     contacts.forEach(contact =>{
-        let [num,name,email,phone] = contact.split("|")
-        alert(name)
-    })
+        contactNames.push(contact.split("|")[1]);
+    });
+   alert(contactNames.join("\n"));
+   }else if(command.startsWith("get ")){
+    let number = command.split(" ")[1];
+    let contact = contacts.find(c => c.startsWith(number + "|"))
+    if(contact){
+        let details = contact.split("|");
+        alert(`Name: ${details[1]}\nEmail: ${details[2]}\nPhone: ${details[3]} `);
+    }
    }
 }
+
