@@ -3,8 +3,13 @@
 const getElement = selector => document.querySelector(selector);
 
 document.addEventListener("DOMContentLoaded", () => {
-
+    let timerId = null;
     getElement("#countdown").addEventListener("click", () => {
+        if (timerId){
+            clearInterval(timerId);
+            timerId = null;
+        }
+
         const eventName = getElement("#event").value;
         const eventDateString = getElement("#date").value;  
         const messageLbl = getElement("#message");  
@@ -20,25 +25,42 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const today = new Date();
-        const msFromToday = eventDate.getTime() - today.getTime();
-        const msForOneDay = 24 * 60 * 60 * 1000; 
-        const daysToDate = Math.ceil( msFromToday / msForOneDay ); 
+        function updateCountdown(){
+            const now = new Date();
+            let secondsLeft = Math.floor((eventDate.getTime() - now.getTime()) / 1000);
 
-        
-        const displayDate = eventDate.toDateString();
-        let msg = "";
-        if (daysToDate == 0) {
-            msg = `Hooray! Today is ${eventName}! (${displayDate})`;
-        } else if (daysToDate > 0) {
-            msg = `${daysToDate} day(s) until ${eventName}! (${displayDate})`;
-        } else if (daysToDate < 0) {
-            msg = `${eventName} happened ${Math.abs(daysToDate)} 
-                   day(s) ago. (${displayDate})`;
+            const displayDate = eventDate.toDateString();
+            let msg = "";
+
+            if(secondsLeft === 0){
+                msg = `Hooray! Today is ${eventName}! (${displayDate})`;
+            
+            clearInterval(timerId);
+            timerId = null;
+            }else if(secondsLeft > 0){
+                const days = Math.floor(secondsLeft / 86400);
+                secondsLeft %= 86400;
+                const hours = Math.floor(secondsLeft/3600);
+                secondsLeft %= 3600;
+                const minutes = Math.floor(secondsLeft / 60);
+                const seconds = secondsLeft % 60;
+                msg = `${days} day(s), ${hours} hour(s), ${minutes} minute(s), ${seconds} second(s) until ${eventName}! (${displayDate})`;
+            }else{
+                secondsLeft = Math.abs(secondsLeft);
+                const days = Math.floor(secondsLeft / 86400);
+                secondsLeft %= 86400;
+                const hours = Math.floor(secondsLeft / 3600);
+                secondsLeft %= 3600;
+                const minutes = Math.floor(secondsLeft / 60);
+                const seconds = secondsLeft % 60;
+                msg = `${eventName} happened ${days} day(s), ${hours} hour(s), ${minutes} minute(s), ${seconds} second(s) ago. (${displayDate})`;
+                clearInterval(timerId);
+                timerId = null;
+            }
+            messageLbl.textContent = msg;
         }
-        messageLbl.textContent = msg;
+        updateCountdown()
+        timerId = setInterval(updateCountdown, 1000);
     });
-
- 
     getElement("#event").focus();
 });
