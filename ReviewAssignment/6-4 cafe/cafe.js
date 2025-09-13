@@ -4,6 +4,7 @@ const getElement = selector => document.querySelector(selector);
 const getSelectedProduct = src => {
     
 };
+
 function getPrice(itemName){
     switch(itemName){
         case "espresso":
@@ -20,6 +21,7 @@ function getPrice(itemName){
 }
 
 
+
 document.addEventListener("DOMContentLoaded", () => {
     let cartTotal = 0
     const images = document.querySelectorAll("img")
@@ -27,6 +29,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const displayTotal = document.getElementById("total")
     const placeOrder = document.getElementById("place_order")
     const clearOrder = document.getElementById("clear_order")
+
+    function updateTotal(){
+        const newOption = document.createElement("option")
+        cartTotal += itemPrice
+        displayTotal.textContent = `Total: $${cartTotal.toFixed(2)}`
+        newOption.textContent = `${itemPrice.toFixed(2)} - ${itemNameUpper}`
+        orderBox.appendChild(newOption)
+    }
+    function clearAll(){
+        displayTotal.textContent = ""
+        orderBox.innerHTML = ""
+        displayTotal.textContent = `Total: $0`
+        cartTotal = 0
+    }
+
     images.forEach(img => {
         const imgId = img.id
         const imgSrc = img.src  
@@ -40,15 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         img.addEventListener("click", function(){
             const itemName = img.alt
+            const itemNameUpper = itemName.charAt(0).toUpperCase() + itemName.slice(1)
             const itemPrice = getPrice(itemName)
-            const newOption = document.createElement("option")
-
-            cartTotal += itemPrice
-            //fix capitalization
-            displayTotal.textContent = `Total: $${cartTotal.toFixed(2)}`
-            newOption.textContent = `${itemPrice.toFixed(2)} - ${itemName}`
-            orderBox.appendChild(newOption)
-
+            updateTotal(itemNameUpper,itemPrice)
         })
     })
 
@@ -56,10 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("order_form").submit()
     })
     clearOrder.addEventListener("click", function(){
-        displayTotal.textContent = ""
-        orderBox.innerHTML = ""
-        displayTotal.textContent = `Total: $0`
-        cartTotal = 0
+        clearAll()
     })
 
 
