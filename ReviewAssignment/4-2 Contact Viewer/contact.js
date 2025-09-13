@@ -10,16 +10,32 @@ const menuString = "COMMAND MENU\n" +
     "list - List all contacts\n" +
     "get # - Get contact with the specified number\n" +
     "exit - Exit program";
+function listContacts(contacts){
+    let contactInfo = ""
+    for(let i = 0; i < contacts.length; i++){
+        let contact = contacts[i].split("|")
+        contactInfo += `${contact[0]} - ${contact[1]}\n`
+    }
+    return contactInfo
+}
+function getContact(contacts,contactNum){
+    let contactFound = false;
+    for(let i = 0; i < contacts.length; i++){
+        let contact = contacts[i].split("|")
+        if(contactNum == contact[0]){
+            contactFound = true;
+            return (`Contact info for ${contact[1]}\nEmail: ${contact[2]}\nPhone: ${contact[3]}`)
+            }
+        } 
+        if(!contactFound){
+            return `No data for #${contactNum}`
+        }
+}
 
 while(true){
     let command = prompt(menuString).trim().toLowerCase()
     if(command == "list"){
-        let contactInfo = ""
-        for(let i = 0; i < contacts.length; i++){
-            let contact = contacts[i].split("|")
-            contactInfo += `${contact[0]} - ${contact[1]}\n`
-        }
-        alert(contactInfo)    
+        alert(listContacts(contacts))    
     }else if(command.startsWith("get ")){
         let commandNum = command.split(" ")
         let contactNum = commandNum[1]
@@ -27,18 +43,7 @@ while(true){
             alert("Invalid Command")
             continue       
         }
-        let contactFound = false;
-        for(let i = 0; i < contacts.length; i++){
-            let contact = contacts[i].split("|")
-            if(contactNum == contact[0]){
-                alert(`Contact info for ${contact[1]}\nEmail: ${contact[2]}\nPhone: ${contact[3]}`)
-                contactFound = true;
-                break
-            }
-        } 
-        if(!contactFound){
-            alert(`No data for #${commandNum[1]}`)
-        }
+        alert(getContact(contacts,contactNum))   
     }else if(command == "exit"){
         alert("Exiting Contact Viewer")
         break;
