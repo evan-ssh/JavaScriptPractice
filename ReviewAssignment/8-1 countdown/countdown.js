@@ -7,7 +7,30 @@ document.addEventListener("DOMContentLoaded", () => {
     getElement("#countdown").addEventListener("click", () => {
         const eventName = getElement("#event").value;
         const eventDateString = getElement("#date").value;  
-        const messageLbl = getElement("#message");  
+        const messageLbl = getElement("#message"); 
+
+        function countDown(){
+            const today = new Date();
+            const msFromToday = eventDate.getTime() - today.getTime();
+            const totalSeconds = Math.floor(msFromToday/ 1000);
+            const daysToDate = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor(((totalSeconds % 86400) / 3600));
+            const minutes = Math.floor(((totalSeconds % 3600)/ 60));
+            const seconds = Math.floor(totalSeconds % 60)
+        // create and display message 
+            const displayDate = eventDate.toDateString();
+            let msg = "";
+            if (daysToDate == 0) {
+                msg = `Hooray! Today is ${eventName}! (${displayDate})`;
+                clearInterval(countdownInterval);
+            } else if (daysToDate > 0) {
+                msg = `${daysToDate} day(s), ${hours} hours, ${minutes} minutes, ${seconds} seconds until ${eventName}! (${displayDate})`;
+            } else if (daysToDate < 0) {
+                msg = `${eventName} happened ${Math.abs(daysToDate)} day(s) ago. (${displayDate})`;
+                clearInterval(countdownInterval)
+        }
+        messageLbl.textContent = msg;
+        }
 
         // make sure user entered event and date 
         if (eventName == "" || eventDateString == "") {
@@ -24,28 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if(countdownInterval) clearInterval(countdownInterval);
 
-        // calculate days
-        function countDown(){
-            const today = new Date();
-            const msFromToday = eventDate.getTime() - today.getTime();
-            const msForOneDay = 24 * 60 * 60 * 1000; // hrs * mins * secs * milliseconds  
-            const totalSeconds = msFromToday/ 1000;
-            const daysToDate = Math.floor( msFromToday / msForOneDay ); 
-            const hours = Math.floor(((totalSeconds % 86400) / 3600));
-            const minutes = Math.floor(((totalSeconds % 3600)/ 60));
-            const seconds = Math.floor(totalSeconds % 60)
-        // create and display message 
-            const displayDate = eventDate.toDateString();
-            let msg = "";
-            if (daysToDate == 0) {
-                msg = `Hooray! Today is ${eventName}! (${displayDate})`;
-            } else if (daysToDate > 0) {
-                msg = `${daysToDate} day(s), ${hours} hours, ${minutes} minutes, ${seconds} seconds until ${eventName}! (${displayDate})`;
-            } else if (daysToDate < 0) {
-                msg = `${eventName} happened ${Math.abs(daysToDate)} day(s) ago. (${displayDate})`;
-        }
-        messageLbl.textContent = msg;
-        }
         countDown();
         countdownInterval = setInterval(countDown, 1000);
     });

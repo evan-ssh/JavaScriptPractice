@@ -16,7 +16,7 @@ function getPrice(itemName){
         case "cappuccino":
             return 3.45;
         case "coffee":
-            return 1.75
+            return 1.75;
     }
 }
 
