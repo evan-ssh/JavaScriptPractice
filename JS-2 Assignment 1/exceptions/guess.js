@@ -15,7 +15,7 @@ const getGuess = () => {
     if (isNaN(guess)) {
         throw new Error("Not a valid number. Please enter a valid number.");
     } else if (guess < 1 || guess > 10) {
-        throw new RangeError("Invalid number. Enter a number between 1 and 10.");
+        throw new RangeError("Not a valid number. Please enter a valid number.");
     }
     return guess;
 };
