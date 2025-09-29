@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const userDate = new Date(dobField.value + "T00:00:00");
             const currentDate = new Date()
             currentDate.setHours(0,0,0,0);
-            if(userDate > currentDate){
+            if(userDate >= currentDate){
                 valid = false;
                 dobSpan.textContent = "Please enter a date in the past."
             }else{

@@ -8,9 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const cardField = getElement("#ccnumber");
     const expField = getElement("#expdate");
     const securityField = getElement("#securitycode");
-    const submitBtn = getElement("#save");
+  
+
     // attach invalid event handlers
-   
 
     const fields = [nameField,cardField,expField,securityField]
     form.noValidate = true;
@@ -19,33 +19,54 @@ document.addEventListener("DOMContentLoaded", () => {
             field.nextElementSibling.textContent = field.validationMessage;
         });
     })
-    // attach invalid event handlers
-    submitBtn.addEventListener("click", (evt) =>{
-
-
+   
+    form.addEventListener("submit", (evt) =>{
         // handle submit event  fields.forEach(field => {
         fields.forEach(field => {
-            
                 field.nextElementSibling.textContent = "";
-                field.setCustomValidity("");
-            });
-            if(expField.value){
-                
-                const expDate = new Date(expField.value + "T00:00:00");
-                const currentDate = new Date()
-                currentDate.setHours(0,0,0,0);
-               
-                if(expDate <= currentDate){
-                    expField.setCustomValidity("Please enter a date in the future.");
-                    expField.nextElementSibling.textContent = expField.validationMessage;
-                }
-                }
-            
-            if(!form.checkValidity()){
-                evt.preventDefault();
+                field.setCustomValidity("");});
+
+        if(!nameField.value.trim()){
+            nameField.setCustomValidity("Please fill out this field.");
+            nameField.nextElementSibling.textContent = nameField.validationMessage;
+        }
+        if(!cardField.value.trim()){
+            cardField.setCustomValidity("Must be 16 digits.");
+            cardField.nextElementSibling.textContent = cardField.validationMessage;
+        } else if (!/^\d{16}$/.test(cardField.value.trim())) {
+            cardField.setCustomValidity("Must be 16 digits.");
+            cardField.nextElementSibling.textContent = cardField.validationMessage;
+        }
+
+        if(!securityField.value.trim()){
+            securityField.setCustomValidity("Must be 3 digits.");
+            securityField.nextElementSibling.textContent = securityField.validationMessage;
+        }else if (!/^\d{3}$/.test(securityField.value.trim())) {
+            securityField.setCustomValidity("Must be 3 digits.");
+            securityField.nextElementSibling.textContent = securityField.validationMessage;
+        }
+
+        
+        if(!expField.value.trim()){
+            expField.setCustomValidity("Must be a future date in the MM/YY format.")            
+        } else if (!/^\d{2}\/\d{2}$/.test(expField.value.trim())) {
+            expField.setCustomValidity("Must be a future date in the MM/YY format.");
+            expField.nextElementSibling.textContent = expField.validationMessage;
+        } else {
+            const monthYear = expField.value.split("/");
+            const expiryMonth = parseInt(monthYear[0]);
+            const expiryYear = 2000 + parseInt(monthYear[1]); 
+            const expiryDate = new Date(expiryYear,expiryMonth - 1, 1);
+            const now = new Date();
+            now.setDate(1);
+            now.setHours(0,0,0,0);
+            if (expiryDate <= now) {
+                expField.setCustomValidity("Must be a future date in the MM/YY format.");
+                expField.nextElementSibling.textContent = expField.validationMessage;
             }
-
-         
-
-        });
+        }
+        if(!form.checkValidity()){
+            evt.preventDefault();
+        }
+    });
 });
