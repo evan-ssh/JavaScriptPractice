@@ -37,27 +37,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+
+        const zipSpan = zipField.parentNode.querySelector("span");
         if(!zipField.value.trim() || !/^\d{5}$/.test(zipField.value.trim())){
             valid = false;
-            const zipSpan = zipField.parentNode.querySelector("span");
-            zipSpan.textContent = "Please enter a 5 digit ZIP."
+            
+            zipSpan.textContent = "Please enter a 5 digit ZIP.";
         }else{
-            zipField.textContent = "";
-        
+            zipSpan.textContent = "";
         }
 
+        const dobSpan = dobField.parentNode.querySelector("span");
         if(!dobField.value.trim()){
             valid = false;
-            const dobSpan = dobField.parentNode.querySelector("span");
             dobSpan.textContent = "Please enter your date of birth.";         
         }else{
             const userDate = new Date(dobField.value + "T00:00:00");
             const currentDate = new Date()
             currentDate.setHours(0,0,0,0);
-            currentDate.setHours(0,0,0,0);
             if(userDate > currentDate){
                 valid = false;
-                dobSpan = dobField.parentNode.querySelector("span");
                 dobSpan.textContent = "Please enter a date in the past."
             }else{
                 dobSpan.textContent = "";
