@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
         displayScores(Students);
     });
 
-    // Default sort by last name
     getElement("#sort").value = "lname";
     displayScores(Students);
     getElement("#first_name").focus();
