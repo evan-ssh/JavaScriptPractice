@@ -26,13 +26,11 @@ function createCol(text) {
 function displayInvoices(invoices) {
     const table = getElement("#invoice_table");
 
-    // clear any existing invoices (but not header row)
     const rows = document.querySelectorAll("#invoice_table tr");
     for (let i = 1; i < rows.length; i++) {
         table.removeChild(rows[i]);
     }
 
-    // add one row for each invoice
     invoices.forEach(invoice => {
         let tableRow = document.createElement("tr")
         let company = invoice[0]
@@ -41,8 +39,8 @@ function displayInvoices(invoices) {
         let paidBool = invoice[3]
 
         tableRow.appendChild(createCol(company))
-        tableRow.appendChild(createCol(amountDue))
-        tableRow.appendChild(createCol(dueDate.toLocaleDateString()))
+        tableRow.appendChild(createCol(amountDue.toFixed(2)))
+        tableRow.appendChild(createCol(dueDate.toDateString()))
         tableRow.appendChild(createCol(paidBool))
         table.appendChild(tableRow)
     })
@@ -52,19 +50,15 @@ function displayInvoices(invoices) {
 function filterInvoices() {
     const invoices = getInvoices();
 
-    // filter by date
     let filtered = invoices.filter(invoice => {
         const invoiceDate = invoice[2];
         const startDate = new Date(getElement("#start_date").value);
         const endDate   = new Date(getElement("#end_date").value);        
         if (isNaN(startDate)) return invoiceDate <= endDate;
         if (isNaN(endDate)) return invoiceDate >= startDate;
-
         return invoiceDate >= startDate && invoiceDate <= endDate;
-        // add  code that finishes this filter
     });
 
-    // filter by paid status
     const paidBtn = getElement("#paid");
     const unpaidBtn = getElement("#unpaid");
 
@@ -73,7 +67,6 @@ function filterInvoices() {
     }else if (unpaidBtn.checked){
         filtered = filtered.filter(invoice => invoice[3] === false)
     }
-    // display the filtered data
     displayInvoices(filtered);
 }
 
