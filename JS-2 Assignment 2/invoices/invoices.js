@@ -42,7 +42,7 @@ function displayInvoices(invoices) {
 
         tableRow.appendChild(createCol(company))
         tableRow.appendChild(createCol(amountDue))
-        tableRow.appendChild(createCol(dueDate))
+        tableRow.appendChild(createCol(dueDate.toLocaleDateString()))
         tableRow.appendChild(createCol(paidBool))
         table.appendChild(tableRow)
     })
@@ -57,12 +57,22 @@ function filterInvoices() {
         const invoiceDate = invoice[2];
         const startDate = new Date(getElement("#start_date").value);
         const endDate   = new Date(getElement("#end_date").value);        
+        if (isNaN(startDate)) return invoiceDate <= endDate;
+        if (isNaN(endDate)) return invoiceDate >= startDate;
 
-        // add code that finishes this filter
+        return invoiceDate >= startDate && invoiceDate <= endDate;
+        // add  code that finishes this filter
     });
 
     // filter by paid status
+    const paidBtn = getElement("#paid");
+    const unpaidBtn = getElement("#unpaid");
 
+    if(paidBtn.checked){
+        filtered = filtered.filter(invoice => invoice[3] === true)
+    }else if (unpaidBtn.checked){
+        filtered = filtered.filter(invoice => invoice[3] === false)
+    }
     // display the filtered data
     displayInvoices(filtered);
 }
