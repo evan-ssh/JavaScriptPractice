@@ -3,57 +3,58 @@
 const getElement = selector => document.querySelector(selector);
 
 const displayScores = Students => {   
-
-    const filterValue = getElement("#filter").value; // "all", "80", "90"
+    const filterValue = Number(getElement("#filter").value);
     const sortValue = getElement("#sort").value;
 
-    let filteredStudents = Students;
-    if (filterValue !== "all") {
-        filteredStudents = filteredStudents.filter(s => Number(s[2]) >= Number(filterValue));
-    }
+    let filteredStudents = Students.filter(s => Number(s[2]) >= filterValue);
 
-    filteredStudents = [...filteredStudents];
-    if (sortValue === "first") {
+    if (sortValue === "fname") {
         filteredStudents.sort((a, b) => a[0].localeCompare(b[0]));
-    } else if (sortValue === "last") {
+    } else if (sortValue === "lname") {
         filteredStudents.sort((a, b) => a[1].localeCompare(b[1]));
     } else if (sortValue === "score") {
         filteredStudents.sort((a, b) => Number(b[2]) - Number(a[2]));
     }
 
-   
     let displayStr = "";
     for (let i = 0; i < filteredStudents.length; i++) {
-        displayStr += "<tr><td>" + filteredStudents[i][0] + "</td><td>" + filteredStudents[i][1] + "</td><td>" + filteredStudents[i][2] + "</td></tr>";
+        displayStr += filteredStudents[i][0] + ", " + filteredStudents[i][1] + ": " + filteredStudents[i][2] + "\n";
     }
-    getElement("#scores_tbody").innerHTML = displayStr;
+    getElement("#score_list").value = displayStr;
 
+ 
     let total = 0;
     for (let i = 0; i < filteredStudents.length; i++) {
         total += Number(filteredStudents[i][2]);
     }
-    let avg = 0;
+    let avg = "0.00";
     if (filteredStudents.length > 0) {
-        avg = (total / filteredStudents.length).toFixed(2);
+        avg = (total / filteredStudents.length).toFixed(1);
     }
-    getElement("#average_score").textContent = avg;
+    getElement("#avg").textContent = avg;
 };
 
 document.addEventListener("DOMContentLoaded", () => {
     let Students = [];
     getElement("#add_score").addEventListener("click", () => {   
-        const name = getElement("#first_name").value;
-        const lname = getElement("#last_name").value;
-        const score = getElement("#score").value;
-        if(!isNaN(score) && name && lname){
-            Students.push([name,lname,score]);
+        const name = getElement("#first_name").value.trim();
+        const lname = getElement("#last_name").value.trim();
+        const score = getElement("#score").value.trim();
+        if(!isNaN(score) && name && lname && score !== "") {
+            Students.push([name, lname, score]);
             displayScores(Students);
+            getElement("#first_name").value = "";
+            getElement("#last_name").value = "";
+            getElement("#score").value = "";
         }
     });
     
     getElement("#clear_scores").addEventListener("click", () => {
         Students.length = 0;
         displayScores(Students);
+        getElement("#first_name").value = "";
+        getElement("#last_name").value = "";
+        getElement("#score").value = "";
     });
 
     getElement("#sort").addEventListener("change", () => {
@@ -64,7 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
         displayScores(Students);
     });
 
-    getElement("#sort").value = "last";
+    // Default sort by last name
+    getElement("#sort").value = "lname";
     displayScores(Students);
     getElement("#first_name").focus();
 });
