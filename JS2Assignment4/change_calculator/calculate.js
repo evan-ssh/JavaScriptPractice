@@ -9,33 +9,42 @@ const clearForm = () => {
     document.querySelector("#cents").focus();
 };
 
+const changeCalculator = {
+    quarters: 0,
+    dimes: 0,
+    nickels: 0,
+    pennies: 0,
+
+    validate(cents) {
+        return !isNaN(cents) && cents >= 0 && cents <= 99;
+    },
+
+    calculate(cents) {
+        this.quarters = Math.floor(cents / 25);
+        cents = cents % 25;
+        this.dimes = Math.floor(cents / 10);
+        cents = cents % 10;
+        this.nickels = Math.floor(cents / 5);
+        this.pennies = cents % 5;
+    },
+
+    display() {
+        document.querySelector("#quarters").value = this.quarters;
+        document.querySelector("#dimes").value = this.dimes;
+        document.querySelector("#nickels").value = this.nickels;
+        document.querySelector("#pennies").value = this.pennies;
+    }
+};
+
 const calculateChange = () => {
-    // get the number of cents from the user
     let cents = Math.floor(parseInt(document.querySelector("#cents").value));
 
-    if (isNaN(cents) || cents < 0 || cents > 99) {
+    if (!changeCalculator.validate(cents)) {
         alert("Please enter a valid number between 0 and 99");
         document.querySelector("#cents").select();
     } else {
-        // calculate the number of quarters
-        const quarters = Math.floor(cents / 25);        // get number of quarters
-        cents = cents % 25;         // assign the remainder to the cents variable
-
-        // calculate the number of dimes
-        const dimes = Math.floor(cents / 10);           // get number of dimes
-        cents = cents % 10;         // assign the remainder to the cents variable
-
-        // calculate the number of nickels
-        const nickels = Math.floor(cents / 5);
-
-        // calculate the number of nickels and pennies
-        const pennies = cents % 5;
-
-        // display the results of the calculations
-        document.querySelector("#quarters").value = quarters;
-        document.querySelector("#dimes").value = dimes;
-        document.querySelector("#nickels").value = nickels;
-        document.querySelector("#pennies").value = pennies;
+        changeCalculator.calculate(cents);
+        changeCalculator.display();
     }
 };
 
