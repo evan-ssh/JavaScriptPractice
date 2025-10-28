@@ -9,24 +9,29 @@ class Burger {
     }
     
     toString() {
-        let result = `<strong>${this.size} ${this.type} burger - $${this.getPrice().toFixed(2)}</strong>`;
+        let bgrStr= `<strong>${this.size} ${this.type} burger - $${this.getPrice().toFixed(2)}</strong>`;
         if(this.toppings) {
             const toppingList = this.toppings.split(", ");
-            result += "<ul>";
+            bgrStr += "<ul>";
             toppingList.forEach(topping => {
-                result += `<li>${topping}</li>`;
+                bgrStr += `<li>${topping}</li>`;
             });
-            result += "</ul>";
+            bgrStr += "</ul>";
         }
-        return result;
+        return bgrStr;
     }
     
     getPrice() {
         let price = 0;
-        if(this.type === "cheese" && this.size === "single") price = 6.00;
-        else if(this.type === "cheese" && this.size === "double") price = 12.00;
-        else if(this.type === "regular" && this.size === "single") price = 3.50;
-        else if(this.type === "regular" && this.size === "double") price = 7.00;
+        if(this.type === "cheese" && this.size === "single"){
+            price = 6.00;
+        }else if(this.type === "cheese" && this.size === "double"){
+            price = 12.00;
+        } else if(this.type === "regular" && this.size === "single"){
+            price = 3.50;
+        } else if(this.type === "regular" && this.size === "double"){ 
+            price = 7.00
+        };
         return price;
     }
 }
@@ -69,14 +74,26 @@ class Fries {
     
     getPrice() {
         if(this.type === "regular") {
-            if(this.size === "large") return 6.00;
-            if(this.size === "medium") return 3.00;
-            if(this.size === "small") return 1.50;
+            if(this.size === "large"){
+                return 6.00;
+            } 
+            if(this.size === "medium"){
+                return 3.00;
+            }
+                
+            if(this.size === "small") {
+                return 1.50;
+            }
         }
         if(this.type === "curly") {
-            if(this.size === "large") return 3.75;
-            if(this.size === "medium") return 1.88;
-            if(this.size === "small") return 0.94;
+            if(this.size === "large") {return 3.75
+            };
+            if(this.size === "medium") {
+                return 1.88
+            };
+            if(this.size === "small") {
+                return 0.94 
+            };
         }
         return 0.00;
     }
@@ -153,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if(getElement("#drink_small").checked) drinkSize = "small";
         if(getElement("#drink_medium").checked) drinkSize = "medium";
         if(getElement("#drink_large").checked) drinkSize = "large";
-
+        
         if(drinkType || drinkSize){
             const drink = new Drink(drinkType || undefined, drinkSize || undefined);
             currentOrder.addItem(drink);

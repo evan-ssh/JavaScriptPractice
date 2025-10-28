@@ -21,15 +21,15 @@ class TestScores {
         return this.#scores.join(", ");
     }
 
+
     toLetterString() {
-        const grades = this.#scores.map(elem => {
-            if (elem >= 90) return "A";
-            else if (elem >= 80) return "B";
-            else if (elem >= 70) return "C";
-            else if (elem >= 60) return "D";
-            else return "F";
-        });
-        return grades.join(", ");
+        return this.#scores.map(score => {
+            if (score >= 90) return "A";
+            if (score >= 80) return "B";
+            if (score >= 70) return "C";
+            if (score >= 60) return "D";
+            return "F";
+        }).join(", ");
     }
 
     toSortedString() {

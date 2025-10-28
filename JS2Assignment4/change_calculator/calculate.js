@@ -40,7 +40,7 @@ const calculateChange = () => {
     let cents = Math.floor(parseInt(document.querySelector("#cents").value));
 
     if (!changeCalculator.validate(cents)) {
-        alert("Please enter a valid number between 0 and 99");
+        alert("Please enter a valid number between 0 - 99");
         document.querySelector("#cents").select();
     } else {
         changeCalculator.calculate(cents);
