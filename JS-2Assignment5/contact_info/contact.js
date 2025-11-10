@@ -1,36 +1,36 @@
 "use strict";
-const getElement = selector => document.querySelector(selector);
 
-const padNum = num => num.toString().padStart(2, "0");
+import Contact from './lib_contact.js';
+
+const getElement = selector => document.querySelector(selector);
 
 const clearContact = () => {
     sessionStorage.removeItem("contact");
 };
-const saveContact = (...contact) => {
-    sessionStorage.contact = JSON.stringify(contact);
+
+const saveContact = (contact) => {
+    sessionStorage.contact = JSON.stringify(contact.toJSON());
 };
+
 const displayContact = () => {
-    const contact = JSON.parse(sessionStorage.contact ?? null);
-    if (Array.isArray(contact)) {
-        getElement("#name").value = contact[0];
-        getElement("#email").value = contact[1];
-        getElement("#phone").value = contact[2];
-        getElement("#zip").value = contact[3];
-        const dt = new Date(contact[4]);
-        if(!(dt.toString() == "Invalid Date")) {
-            const str = `${dt.getFullYear()}-${padNum(dt.getMonth() + 1)}-${padNum(dt.getDate())}`;
-            getElement("#dob").value = str;
-        }
+    const contact = Contact.fromJSON(sessionStorage.contact);
+    if (contact) {
+        getElement("#name").value = contact.name;
+        getElement("#email").value = contact.email;
+        getElement("#phone").value = contact.phone;
+        getElement("#zip").value = contact.zip;
+        getElement("#dob").value = contact.dob.toInputString();
     }
 };
+
 const displayConfirmPage = () => {
-    const contact = JSON.parse(sessionStorage.contact ?? null);
-    if (Array.isArray(contact)) {
-        getElement("#lbl_name").textContent = contact[0];
-        getElement("#lbl_email").textContent = contact[1];
-        getElement("#lbl_phone").textContent = contact[2];
-        getElement("#lbl_zip").textContent = contact[3];
-        getElement("#lbl_dob").textContent = new Date(contact[4]).toDateString() ?? "";
+    const contact = Contact.fromJSON(sessionStorage.contact);
+    if (contact) {
+        getElement("#lbl_name").textContent = contact.name;
+        getElement("#lbl_email").textContent = contact.email;
+        getElement("#lbl_phone").textContent = contact.phone;
+        getElement("#lbl_zip").textContent = contact.zip;
+        getElement("#lbl_dob").textContent = contact.dob.isValid() ? contact.dob.toDateString() : "";
     }
 };
 
@@ -64,24 +64,35 @@ document.addEventListener("DOMContentLoaded", () => {
         displayContact();
 
         form.addEventListener("submit", evt => {
-            clearMessages();  
+            clearMessages();
+
+            // Create contact object from form data
+            const contact = new Contact(
+                getElement("#name").value,
+                getElement("#email").value,
+                getElement("#phone").value,
+                getElement("#zip").value,
+                getElement("#dob").value
+            );
 
             // validate user has entered an email or a phone number
             const email = getElement("#email");
-            const phone = getElement("#phone");
-
-            let msg = (email.value == "" && phone.value == "") ? "Please enter an email or phone." : "";
+            let msg = !contact.isEmailOrPhoneProvided() ? "Please enter an email or phone." : "";
             email.setCustomValidity(msg);
 
+            // validate zip code
+            const zip = getElement("#zip");
+            msg = !contact.isZipValid() ? "Please enter a 5 digit Zip." : "";
+            zip.setCustomValidity(msg);
+
             // validate dob 
-            const dob = getElement("#dob"); 
-            const dobValue = new Date(dob.value + "T00:00:00");   // add time to correct UTC/local time issue
-            if (dobValue.toString() == "Invalid Date") {
-                msg = "Please enter a valid DOB."
+            const dob = getElement("#dob");
+            if (!contact.dob.isValid()) {
+                msg = "Please enter a valid DOB.";
+            } else if (!contact.dob.isInPast()) {
+                msg = "DOB must be in the past.";
             } else {
-                let today = new Date();
-                today = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // sets time to 00:00:00
-                msg = (today <= dobValue) ? "DOB must be in the past." : "";
+                msg = "";
             }
             dob.setCustomValidity(msg);
 
@@ -89,9 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if(!form.checkValidity()) { 
                 evt.preventDefault();
             } else {
-                // save contact info to web storage
-                saveContact(getElement("#name").value, email.value, 
-                    phone.value, getElement("#zip").value, dobValue);
+                // save contact object to web storage
+                saveContact(contact);
             }
         });
 
@@ -103,4 +113,4 @@ document.addEventListener("DOMContentLoaded", () => {
         // display data from web storage in confirm page labels
         displayConfirmPage();
     }
-}); 
+});
