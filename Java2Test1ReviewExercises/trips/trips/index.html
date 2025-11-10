@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Trip Info</title>
+  <link type="text/css" rel="stylesheet" href="trips.css">
+</head>
+<body>
+    <h1>Trip Information</h1> 
+    <div id="trips">
+        <textarea id="trip_list" rows="7" cols="45"></textarea><br>
+        <p>Average Distance: <span id="avg"></span></p>
+        <p>Total Distance: <span id="total"></span></p>
+        
+        <label for="sort">Sort by:</label>
+        <select id="sort">
+            <option value="distance" selected>Distance</option>
+            <option value="gallons">Gallons</option>
+            <option value="mpg">Miles Per Gallon</option>
+        </select>
+
+        <label for="filter">Filter by MPG:</label>
+        <select id="filter">
+            <option value="0" selected>Show All</option>
+            <option value="30">30+</option>
+            <option value="20">20+</option>
+            <option value="10">10+</option>
+            <option value="5">5+</option>
+        </select>
+    </div>
+    <div>
+        <label for="distance">Distance:</label>
+        <input type="text" id="distance">  
+    </div>
+    <div>
+        <label for="gallons">Gallons:</label>
+        <input type="text" id="gallons">  
+    </div>  
+    <div>
+        <label></label>
+        <input type="button" id="add_trip" value="Add">
+        <input type="button" id="clear_trips" value="Clear Trips">  
+    </div>
+    <div class="clear"></div>
+    <script src="trips.js"></script>
+</body>
+</html>
