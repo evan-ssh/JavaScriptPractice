@@ -6,12 +6,15 @@ class Trip {
         this.miles = parseFloat(miles);
         this.gallons = parseFloat(gallons);
     }
-    get mpg() {                  // a read-only property        
+    
+    get mpg() {
         return this.miles / this.gallons;
     }
-
-    toString() {                 // override existing method
-        const mpg = this.mpg.toFixed(1);
-        return `${this.destination}: Miles - ${this.miles}; MPG - ${mpg}`;
+    
+    toString() {
+        return `${this.destination} | ${this.miles} miles | ${this.gallons} gallons | ${this.mpg.toFixed(1)} mpg\n`;
     }
 }
+
+// Export Trip class as default
+export default Trip;

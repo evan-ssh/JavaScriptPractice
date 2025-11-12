@@ -1,36 +1,25 @@
 "use strict";
 
-class Trips {
-    #trips = null;               // a private field    
+import Trip from 'trip';
 
-    constructor() {
-        this.#trips = [];       
-    }
+// Private constant for storing trips
+const tripsArray = [];
 
+// Export object literal as default
+export default {
     push(trip) {
-        if (trip instanceof Trip) {  // only add valid Trip objects
-            this.#trips.push(trip);
-        } else {
-            throw new Error("Must be a Trip object.");
-        }
-    }
-
-    get avgMpg() {              // a read-only property
-        let totalMiles = 0;        
-        let totalGallons = 0;        
-        for (let trip of this.#trips) {
-            totalMiles += trip.miles;
-            totalGallons += trip.gallons;
-        }
-        return totalMiles / totalGallons;
-    }
-
-    toString() {                 // override existing method
+        tripsArray.push(trip);
+    },
+    
+    toString() {
         let str = "";
-        for (let trip of this.#trips) {
-            str += trip + "\n";
+        for (let trip of tripsArray) {
+            str += trip.toString();
         }
-        str += "\nAverage MPG: " + this.avgMpg.toFixed(1);
         return str;
+    },
+    
+    get length() {
+        return tripsArray.length;
     }
-}
+};
