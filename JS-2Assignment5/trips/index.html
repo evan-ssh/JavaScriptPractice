@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Trip Calculator</title>
+    <title>Trips Log</title>
     <link rel="stylesheet" href="trips.css">
     
-    <!-- Import map -->
     <script type="importmap">
     {
         "imports": {
@@ -18,37 +16,30 @@
     </script>
 </head>
 <body>
-    <h1>Trip Calculator</h1>
-    
+    <h1>Trips Log</h1>
+    <div id="trips">
+        <textarea id="trip_list" rows="8" cols="42"></textarea>
+    </div>
     <div>
         <label for="destination">Destination:</label>
         <input type="text" id="destination">
     </div>
-    
     <div>
-        <label for="miles">Miles:</label>
+        <label for="miles">Miles Driven:</label>
         <input type="text" id="miles">
     </div>
-    
     <div>
-        <label for="gallons">Gallons:</label>
+        <label for="gallons">Gallons of Gas Used:</label>
         <input type="text" id="gallons">
     </div>
-    
     <div>
+        <label></label>
         <input type="button" id="add_trip" value="Add Trip">
     </div>
-    
     <div>
-        <label id="msg"></label>
+        <span id="msg"></span>
     </div>
-    
-    <div>
-        <label for="trip_list">Trip List:</label><br>
-        <textarea id="trip_list" rows="10" cols="50" readonly></textarea>
-    </div>
-    
-    <!-- Convert to module -->
+
     <script type="module" src="trips.js"></script>
 </body>
 </html>

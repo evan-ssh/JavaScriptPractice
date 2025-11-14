@@ -2,7 +2,6 @@
 
 class Dob extends Date {
     constructor(dateString) {
-        // Add time to correct UTC/local time issue
         super(dateString + "T00:00:00");
     }
     

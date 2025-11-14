@@ -7,11 +7,10 @@ import * as validation from 'validation';
 const getElement = selector => document.querySelector(selector);
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Remove the trips = new Trips(); line since we import the object literal
 
     getElement("#add_trip").addEventListener("click", () => {
         const msgElement = getElement("#msg");
-        msgElement.textContent = "";  // clear any previous message
+        msgElement.textContent = ""; 
 
         const destination = getElement("#destination").value;
         const miles = getElement("#miles").value;
@@ -19,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
         
         const trip = new Trip(destination, miles, gallons);
 
-        // Use validation module functions
         if (validation.isAnyEmpty(destination, miles, gallons)) {
             msgElement.textContent = "All fields are required.";
             getElement("#destination").focus();
@@ -41,6 +39,5 @@ document.addEventListener("DOMContentLoaded", () => {
             getElement("#destination").focus();   
         }
     });
-    
-    getElement("#destination").focus();  // initial load
+    getElement("#destination").focus();
 });

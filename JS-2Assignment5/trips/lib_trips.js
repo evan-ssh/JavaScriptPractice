@@ -2,10 +2,8 @@
 
 import Trip from 'trip';
 
-// Private constant for storing trips
 const tripsArray = [];
 
-// Export object literal as default
 export default {
     push(trip) {
         tripsArray.push(trip);
@@ -15,6 +13,15 @@ export default {
         let str = "";
         for (let trip of tripsArray) {
             str += trip.toString();
+            if (!trip.toString().endsWith('\n')) {
+                str += '\n'; 
+            }
+        }
+        
+        if (tripsArray.length > 0) {
+            const totalMPG = tripsArray.reduce((sum, trip) => sum + trip.mpg, 0);
+            const avgMPG = totalMPG / tripsArray.length;
+            str += `\nAverage MPG: ${avgMPG.toFixed(1)}`;
         }
         return str;
     },

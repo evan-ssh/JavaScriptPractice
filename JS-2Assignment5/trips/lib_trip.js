@@ -12,9 +12,8 @@ class Trip {
     }
     
     toString() {
-        return `${this.destination} | ${this.miles} miles | ${this.gallons} gallons | ${this.mpg.toFixed(1)} mpg\n`;
+        return `${this.destination}: Miles - ${this.miles}; MPG - ${this.mpg.toFixed(1)}\n`;
     }
 }
 
-// Export Trip class as default
 export default Trip;

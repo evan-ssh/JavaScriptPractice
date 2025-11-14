@@ -5,25 +5,24 @@ const getElement = selector => document.querySelector(selector);
 
 document.addEventListener("DOMContentLoaded", () => {
     getElement("#countdown").addEventListener("click", () => {
-        const event = new Event(getElement("#event").value, getElement("#date").value)
-        const messageLbl = getElement("#message");  
-
-        // make sure user entered event name and date 
+        const eventName = getElement("#event").value;
+        const eventDate = getElement("#date").value;
+  
+        const event = new Event(eventName, eventDate);
+        const message = getElement("#message");  
+ 
         if (!event.hasName || !event.hasDate) {
-            messageLbl.textContent = "Please enter both a name and a date.";
+            message.textContent = "Please enter both a name and a date.";
             return;
         }
 
-        // make sure date is valid
         if (!event.isValidDate) {
-            messageLbl.textContent = "Please enter a valid date.";
+            message.textContent = "Please enter a valid date.";
             return;
         }
 
-        // display message
-        messageLbl.textContent = event.message;
+        message.textContent = event.message;
     });
-
-    // set focus on first text box
+    
     getElement("#event").focus();
 });

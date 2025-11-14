@@ -10,32 +10,29 @@ class StreetCraps {
     
     playRoll(total) {
         if (this.comeOutRoll) {
-            // Come out roll logic
             if (total === 7 || total === 11) {
-                this.message = "You win!";
+                this.message = `You rolled ${total} on the come out roll - you win!`;
                 this.gameOver = true;
             } else if (total === 2 || total === 3 || total === 12) {
-                this.message = "You lose!";
+                this.message = `You rolled ${total} on the come out roll - you lose.`;
                 this.gameOver = true;
             } else {
                 this.point = total;
                 this.comeOutRoll = false;
-                this.message = `Point is ${this.point}. Roll again!`;
+                this.message = `Point is ${this.point}. Roll again.`;
             }
         } else {
-            // Point roll logic
             if (total === this.point) {
-                this.message = "You win!";
+                this.message = `You rolled ${total} - you win!`;
                 this.gameOver = true;
             } else if (total === 7) {
-                this.message = "You lose!";
+                this.message = `You rolled 7 before you rolled the point - you lose.`;
                 this.gameOver = true;
             } else {
-                this.message = `Roll again! Point is ${this.point}`;
+                this.message = `Roll again.`;
             }
         }
     }
-    
     newGame() {
         this.point = 0;
         this.comeOutRoll = true;

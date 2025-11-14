@@ -13,8 +13,10 @@ const saveContact = (contact) => {
 };
 
 const displayContact = () => {
-    const contact = Contact.fromJSON(sessionStorage.contact);
-    if (contact) {
+    if (sessionStorage.contact) {
+        const data = JSON.parse(sessionStorage.contact);
+        const contact = new Contact(data.name, data.email, data.phone, data.zip, data.dobString);
+        
         getElement("#name").value = contact.name;
         getElement("#email").value = contact.email;
         getElement("#phone").value = contact.phone;
@@ -24,8 +26,10 @@ const displayContact = () => {
 };
 
 const displayConfirmPage = () => {
-    const contact = Contact.fromJSON(sessionStorage.contact);
-    if (contact) {
+    if (sessionStorage.contact) {
+        const data = JSON.parse(sessionStorage.contact);
+        const contact = new Contact(data.name, data.email, data.phone, data.zip, data.dobString);
+        
         getElement("#lbl_name").textContent = contact.name;
         getElement("#lbl_email").textContent = contact.email;
         getElement("#lbl_phone").textContent = contact.phone;
@@ -35,38 +39,38 @@ const displayConfirmPage = () => {
 };
 
 const clearMessages = () => {
+    const spans = document.querySelectorAll("span");
     const inputs = document.querySelectorAll("input");
-    for (let input of inputs) {
-        const span = input.nextElementSibling;
-        if (span) span.textContent = "";
-    }
-    inputs[0].focus();
+    spans.forEach(span => span.textContent = "");
+    inputs.forEach(input => input.setCustomValidity(""));
 };
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = getElement("form");
 
-    if (form) {  // index.html
-        // turn off default HTML validation messages
+    if (form){ 
         form.noValidate = true;
-
-        // attach invalid event handler for form controls
-        for (let element of form.elements) {
-            element.addEventListener("invalid", evt => {
-                const elem = evt.currentTarget;
-                const msg = elem.title ? elem.title : elem.validationMessage;
-                const span = elem.nextElementSibling;
-                if (span) span.textContent = msg;
+        form.addEventListener("invalid", evt => {
+            const elem = evt.target;
+            const msg = elem.title || elem.validationMessage;
+            const span = elem.nextElementSibling;
+            if (span) span.textContent = msg;
+        }, true);
+        
+        const inputs = document.querySelectorAll("input");
+        inputs.forEach(input => {
+            input.addEventListener("input", () => {
+                const span = input.nextElementSibling;
+                if (span) span.textContent = "";
+                input.setCustomValidity("");
             });
-        }
+        });
 
-        // display data from web storage in contact form
         displayContact();
 
         form.addEventListener("submit", evt => {
             clearMessages();
 
-            // Create contact object from form data
             const contact = new Contact(
                 getElement("#name").value,
                 getElement("#email").value,
@@ -75,32 +79,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 getElement("#dob").value
             );
 
-            // validate user has entered an email or a phone number
-            const email = getElement("#email");
-            let msg = !contact.isEmailOrPhoneProvided() ? "Please enter an email or phone." : "";
-            email.setCustomValidity(msg);
+            getElement("#name").setCustomValidity(
+                !contact.isNameValid() ? "Please enter your name." : ""
+            );
+            
+            getElement("#email").setCustomValidity(
+                !contact.isEmailOrPhoneValid() ? "Please enter an email or phone." : ""
+            );
+            
+            getElement("#zip").setCustomValidity(
+                !contact.isZipValid() ? "Please enter a 5 digit Zip." : ""
+            );
 
-            // validate zip code
-            const zip = getElement("#zip");
-            msg = !contact.isZipValid() ? "Please enter a 5 digit Zip." : "";
-            zip.setCustomValidity(msg);
+            getElement("#dob").setCustomValidity(
+                !contact.dob.isValid() ? "Please enter a valid DOB." :
+                !contact.dob.isInPast() ? "DOB must be in the past." : ""
+            );
 
-            // validate dob 
-            const dob = getElement("#dob");
-            if (!contact.dob.isValid()) {
-                msg = "Please enter a valid DOB.";
-            } else if (!contact.dob.isInPast()) {
-                msg = "DOB must be in the past.";
-            } else {
-                msg = "";
-            }
-            dob.setCustomValidity(msg);
-
-            // validate form
             if(!form.checkValidity()) { 
                 evt.preventDefault();
             } else {
-                // save contact object to web storage
                 saveContact(contact);
             }
         });
@@ -109,8 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
             clearMessages();
             clearContact();
         });
-    } else {     // confirm.html
-        // display data from web storage in confirm page labels
+    }else {     
         displayConfirmPage();
     }
 });
