@@ -24,17 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
         currentRollSpan.textContent = total;
         
         game.playRoll(total);
-        pointSpan.textContent = game.point;
-        message.textContent = game.message;
+        pointSpan.textContent = game.currentPoint;   
+        message.textContent = game.message;           
         
-        if (game.gameOver) {
+        if (game.isFinished) {                       
             rollButton.disabled = true;
             newGameButton.disabled = false;
         }
     });
     
     newGameButton.addEventListener("click", () => {
-        game.newGame();
+        game.startNewGame();                         
         currentRollSpan.textContent = "0";
         pointSpan.textContent = "0";
         message.textContent = "";

@@ -2,31 +2,31 @@
 
 import Trip from 'trip';
 
-const tripsArray = [];
+const tripsList = [];
 
 export default {
     push(trip) {
-        tripsArray.push(trip);
+        tripsList.push(trip);
     },
     
     toString() {
         let str = "";
-        for (let trip of tripsArray) {
+        for (let trip of tripsList) {
             str += trip.toString();
             if (!trip.toString().endsWith('\n')) {
                 str += '\n'; 
             }
         }
         
-        if (tripsArray.length > 0) {
-            const totalMPG = tripsArray.reduce((sum, trip) => sum + trip.mpg, 0);
-            const avgMPG = totalMPG / tripsArray.length;
+        if (tripsList.length > 0) {
+            const totalMPG = tripsList.reduce((sum, trip) => sum + trip.mpg(), 0);
+            const avgMPG = totalMPG / tripsList.length;
             str += `\nAverage MPG: ${avgMPG.toFixed(1)}`;
         }
         return str;
     },
     
-    get length() {
-        return tripsArray.length;
+    length() {
+        return tripsList.length;
     }
 };

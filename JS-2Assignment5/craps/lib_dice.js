@@ -13,16 +13,16 @@ class Die {
 
 class Dice {
     constructor() {
-        this.die1 = new Die();
-        this.die2 = new Die();
-        this.total = 0;
+        this.dice1 = new Die();
+        this.dice2 = new Die();
+        this.diceTotal = 0;
     }
     
     roll() {
-        this.die1.roll();
-        this.die2.roll();
-        this.total = this.die1.value + this.die2.value;
-        return this.total;
+        this.dice1.roll();
+        this.dice2.roll();
+        this.diceTotal = this.dice1.value + this.dice2.value;
+        return this.diceTotal;
     }
 }
 

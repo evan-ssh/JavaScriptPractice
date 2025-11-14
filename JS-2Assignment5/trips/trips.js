@@ -22,22 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
             msgElement.textContent = "All fields are required.";
             getElement("#destination").focus();
         } else if (validation.isLessThanZero(trip.miles)) {
-            msgElement.textContent = 
-                "Miles must be a valid number greater than zero.";
+            msgElement.textContent =  "Miles must be a valid number greater than zero.";
             getElement("#miles").select();
         } else if (validation.isLessThanZero(trip.gallons)) {
-            msgElement.textContent = 
-                "Gallons must be a valid number greater than zero.";
+            msgElement.textContent = "Gallons must be a valid number greater than zero.";
             getElement("#gallons").select();
         } else {
             trips.push(trip); 
             getElement("#trip_list").value = trips.toString();
-    
             getElement("#destination").value = "";
             getElement("#miles").value = "";
             getElement("#gallons").value = ""; 
             getElement("#destination").focus();   
         }
     });
-    getElement("#destination").focus();
+    getElement("#destination").focus(); 
 });

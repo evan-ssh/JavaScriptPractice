@@ -7,12 +7,12 @@ class Trip {
         this.gallons = parseFloat(gallons);
     }
     
-    get mpg() {
+    mpg() {
         return this.miles / this.gallons;
     }
     
     toString() {
-        return `${this.destination}: Miles - ${this.miles}; MPG - ${this.mpg.toFixed(1)}\n`;
+        return `${this.destination}: Miles - ${this.miles}; MPG - ${this.mpg().toFixed(1)}\n`;
     }
 }
 

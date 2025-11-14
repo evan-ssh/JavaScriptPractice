@@ -2,42 +2,43 @@
 
 class StreetCraps {
     constructor() {
-        this.point = 0;
-        this.comeOutRoll = true;
+        this.currentPoint = 0;
+        this.firstRoll = true;
         this.message = "";
-        this.gameOver = false;
+        this.isFinished = false;
     }
     
-    playRoll(total) {
-        if (this.comeOutRoll) {
-            if (total === 7 || total === 11) {
-                this.message = `You rolled ${total} on the come out roll - you win!`;
-                this.gameOver = true;
-            } else if (total === 2 || total === 3 || total === 12) {
-                this.message = `You rolled ${total} on the come out roll - you lose.`;
-                this.gameOver = true;
+    playRoll(diceTotal) {
+        if (this.firstRoll) {
+            if (diceTotal === 7 || diceTotal === 11) {
+                this.message = `You rolled ${diceTotal} on the come out roll - you win!`;
+                this.isFinished = true;
+            } else if (diceTotal === 2 || diceTotal === 3 || diceTotal === 12) {
+                this.message = `You rolled ${diceTotal} on the come out roll - you lose.`;
+                this.isFinished = true;
             } else {
-                this.point = total;
-                this.comeOutRoll = false;
-                this.message = `Point is ${this.point}. Roll again.`;
+                this.currentPoint = diceTotal;
+                this.firstRoll = false;
+                this.message = `Point is ${this.currentPoint}. Roll again.`;
             }
         } else {
-            if (total === this.point) {
-                this.message = `You rolled ${total} - you win!`;
-                this.gameOver = true;
-            } else if (total === 7) {
+            if (diceTotal === this.currentPoint) {
+                this.message = `You rolled ${diceTotal} - you win!`;
+                this.isFinished = true;
+            } else if (diceTotal === 7) {
                 this.message = `You rolled 7 before you rolled the point - you lose.`;
-                this.gameOver = true;
+                this.isFinished = true;
             } else {
                 this.message = `Roll again.`;
             }
         }
     }
-    newGame() {
-        this.point = 0;
-        this.comeOutRoll = true;
+    
+    startNewGame() {
+        this.currentPoint = 0;
+        this.firstRoll = true;
         this.message = "";
-        this.gameOver = false;
+        this.isFinished = false;
     }
 }
 

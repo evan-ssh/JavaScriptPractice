@@ -25,7 +25,7 @@ const displayContact = () => {
     }
 };
 
-const displayConfirmPage = () => {
+const displayEntries = () => {
     if (sessionStorage.contact) {
         const data = JSON.parse(sessionStorage.contact);
         const contact = new Contact(data.name, data.email, data.phone, data.zip, data.dobString);
@@ -108,6 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
             clearContact();
         });
     }else {     
-        displayConfirmPage();
+        displayEntries();
     }
 });

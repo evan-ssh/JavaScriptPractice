@@ -11,17 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const event = new Event(eventName, eventDate);
         const message = getElement("#message");  
  
-        if (!event.hasName || !event.hasDate) {
+        if (!event.hasName() || !event.hasDate()) {
             message.textContent = "Please enter both a name and a date.";
             return;
         }
 
-        if (!event.isValidDate) {
+        if (!event.isValidDate()) {
             message.textContent = "Please enter a valid date.";
             return;
         }
-
-        message.textContent = event.message;
+        message.textContent = event.message();
     });
     
     getElement("#event").focus();
