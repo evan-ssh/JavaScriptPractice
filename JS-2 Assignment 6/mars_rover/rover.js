@@ -1,122 +1,127 @@
 "use strict";
-const $ = s => document.querySelector(s);
+const $ = selector => document.querySelector(selector);
 
 const domain = "https://rovers.nebulum.one/api/v1/rovers";
-let rovers = [];
-let currentRover = null;
+let roverList = [];
+let selectedRover = null;
+
+const addPadding = num => String(num).padStart(2, "0");
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const roverSelect = $("#rover");
-  const yearSelect = $("#year");
-  const monthSelect = $("#month");
-  const dateSelect = $("#date");
-  const camSelect = $("#camera");
-  const display = $("#display");
-  const errorSpan = $(".error");
+  const roverDropdown = $("#rover");
+  const yearDropdown = $("#year");
+  const monthDropdown = $("#month");
+  const dayDropdown = $("#date");
+  const cameraDropdown = $("#camera");
+  const photoDisplay = $("#display");
+  const errorMessage = $(".error");
 
-  // 1) get rover data + fill rover dropdown
-  rovers = (await (await fetch(domain)).json()).rovers ?? await (await fetch(domain)).json();
-  roverSelect.innerHTML = rovers.map(r => `<option>${r.name}</option>`).join("");
+  try {
+    const roverResponse = await fetch(domain);
+    const roverData = await roverResponse.json();
+    roverList = roverData.rovers;
 
-  // show first rover by default
-  setRover(rovers[0]);
+    roverDropdown.innerHTML = roverList.map(rover => `<option value="${rover.name}">${rover.name}</option>`).join("");
+    if (roverList.length > 0) {
+      setRover(roverList[0]);
+    }
+  } catch (e) {
+    errorMessage.textContent = "Error loading rovers.";
+    return;
+  }
 
-  // 2) rover change handler
-  roverSelect.addEventListener("change", () => {
-    const r = rovers.find(x => x.name === roverSelect.value);
-    if (r) setRover(r);
+  roverDropdown.addEventListener("change", () => {
+    const rover = roverList.find(r => r.name === roverDropdown.value);
+    if (rover) setRover(rover);
   });
 
-  // 3) view photos handler
   $("#view").addEventListener("click", async () => {
-    errorSpan.textContent = "";
-    display.innerHTML = "";
+    errorMessage.textContent = "";
+    photoDisplay.innerHTML = "";
 
-    const earthDate = `${yearSelect.value}-${monthSelect.value}-${dateSelect.value}`;
-    const camera = camSelect.value;
-    const roverName = currentRover.name;
+    const earthDate =
+      `${yearDropdown.value}-${addPadding(monthDropdown.value)}-${addPadding(dayDropdown.value)}`;
+    const cameraCode = cameraDropdown.value;
+    const roverName = selectedRover.name;
 
-    const url =
-      `${domain}/${roverName}/photos/?earth_date=${earthDate}&camera=${camera}`;
+    const photosUrl =
+      `${domain}/${roverName}/photos/?earth_date=${earthDate}&camera=${cameraCode}`;
 
     try {
-      const data = await (await fetch(url)).json();
-      const photos = data.photos ?? data;
+      const photosResponse = await fetch(photosUrl);
+      const photoData = await photosResponse.json();
+      const photos = photoData.photos || [];
 
-      if (!photos.length) {
-        errorSpan.textContent = "No photos for that date/camera.";
+      if (photos.length === 0) {
+        errorMessage.textContent = "No photos for that date/camera.";
         return;
       }
 
-      display.innerHTML = `<h3>${roverName} photos on ${earthDate}</h3>` +
-        photos.map(p => `<img src="${p.img_src}" alt="Mars photo">`).join("");
-    } catch {
-      errorSpan.textContent = "Error loading photos.";
+      photoDisplay.innerHTML =
+        `<h3>${roverName} photos on ${earthDate}</h3>` + photos.map(p => `<img src="${p.img_src}" alt="Mars photo">`).join("");
+    } catch (e) {
+      errorMessage.textContent = "Error loading photos.";
     }
   });
 
-  // ---- functions ----
   function setRover(rover) {
-    currentRover = rover;
+    selectedRover = rover;
     $("#options").classList.remove("hide");
 
-    $("#status").textContent = rover.status;
+    if (rover.status) {
+      $("#status").textContent = rover.status;
+    } else {
+      $("#status").textContent = "N/A";
+    }
+
     $("#photos").textContent = rover.total_photos;
     $("#landing").textContent = rover.landing_date;
     $("#max").textContent = rover.max_date;
 
-    // cameras
-    camSelect.innerHTML = rover.cameras
-      .map(c => `<option value="${c.name}">${c.full_name}</option>`)
-      .join("");
-
-    // dates (range landing -> max)
-    const [ly, lm, ld] = rover.landing_date.split("-").map(Number);
-    const [my, mm, md] = rover.max_date.split("-").map(Number);
-
-    // years
-    yearSelect.innerHTML = "";
-    for (let y = ly; y <= my; y++) {
-      yearSelect.innerHTML += `<option>${y}</option>`;
+    cameraDropdown.innerHTML = rover.cameras.map(cam => `<option value="${cam.name}">${cam.full_name}</option>`).join("");
+    
+    const [landingYear, landingMonth, landingDay] = rover.landing_date.split("-").map(Number);
+    const [maxYear, maxMonth, maxDay] = rover.max_date.split("-").map(Number);
+    yearDropdown.innerHTML = "";
+    for (let i = landingYear; i <= maxYear; i++) {
+      yearDropdown.innerHTML += `<option value="${i}">${i}</option>`;
     }
 
-    // when year/month changes, rebuild lower dropdowns
-    yearSelect.onchange = buildMonths;
-    monthSelect.onchange = buildDays;
+    yearDropdown.onchange = buildMonths;
+    monthDropdown.onchange = buildDays;
 
-    yearSelect.value = my;
+    yearDropdown.value = maxYear;
     buildMonths();
-    monthSelect.value = mm;
+    monthDropdown.value = maxMonth;
     buildDays();
-    dateSelect.value = md;
+    dayDropdown.value = maxDay;
 
     function buildMonths() {
-      const y = Number(yearSelect.value);
-      monthSelect.innerHTML = "";
-
+      const selectedYear = Number(yearDropdown.value);
+      monthDropdown.innerHTML = "";
       let start = 1, end = 12;
-      if (y === ly) start = lm;
-      if (y === my) end = mm;
+      if (selectedYear === landingYear) start = landingMonth;
+      if (selectedYear === maxYear) end = maxMonth;
 
-      for (let m = start; m <= end; m++) {
-        monthSelect.innerHTML += `<option>${m}</option>`;
+      for (let i = start; i <= end; i++) {
+        monthDropdown.innerHTML += `<option value="${i}">${i}</option>`;
       }
       buildDays();
     }
 
     function buildDays() {
-      const y = Number(yearSelect.value);
-      const m = Number(monthSelect.value);
-      dateSelect.innerHTML = "";
+      const selectedYear = Number(yearDropdown.value);
+      const selectedMonth = Number(monthDropdown.value);
+      dayDropdown.innerHTML = "";
 
-      const lastDay = new Date(y, m, 0).getDate();
+      const lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
       let start = 1, end = lastDay;
 
-      if (y === ly && m === lm) start = ld;
-      if (y === my && m === mm) end = md;
+      if (selectedYear === landingYear && selectedMonth === landingMonth) start = landingDay;
+      if (selectedYear === maxYear && selectedMonth === maxMonth) end = maxDay;
 
-      for (let d = start; d <= end; d++) {
-        dateSelect.innerHTML += `<option>${d}</option>`;
+      for (let i = start; i <= end; i++) {
+        dayDropdown.innerHTML += `<option value="${i}">${i}</option>`;
       }
     }
   }

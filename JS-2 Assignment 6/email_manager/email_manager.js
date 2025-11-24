@@ -1,112 +1,106 @@
 "use strict";
 
-const url = "http://127.0.0.1:3000/emails/";
+const domain = "http://127.0.0.1:3000/emails/";
 
 function getElement(selector) {
     return document.querySelector(selector);
 }
 
-function displayEmails(emails) {
-    const selectElement = getElement("#emails");
-    selectElement.textContent = ""; 
-    for (let email of emails) {
+function displayEmails(emailList) {
+    const emailDropdown = getElement("#emails");
+    emailDropdown.textContent = ""; 
+
+    for (let user of emailList) {
         const option = document.createElement("option");
-        option.value = email.id;
-        const text = email.name + " - " + email.email;
-        option.appendChild(document.createTextNode(text));
-        selectElement.appendChild(option);
+        option.value = user.id;
+        const optionText = user.name + " - " + user.email;
+        option.appendChild(document.createTextNode(optionText));
+        emailDropdown.appendChild(option);
     }
+
     getElement("#name").value = "";
     getElement("#email").value = "";
     getElement("#name").focus();
 }
 
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const response = await fetch(url);
-        const json = await response.json();
-        if (json.error)
-            alert("Server error - " + json.error.message);
-        else
-            displayEmails(json);        
-    } catch(e) {
-        alert(e.message);  
-    }          
+        const emailResponse = await fetch(domain);
+        const emailData = await emailResponse.json();
+        if (emailData.error) {
+            alert("Server error - " + emailData.error.message);
+        } else {
+            displayEmails(emailData);
+        }
+    } catch (e) {
+        alert(e.message);
+    }
 
-    getElement("#add_email").addEventListener("click", async() => {
+    getElement("#add_email").addEventListener("click", async () => {
         try {
-            // get user entries
-            const name = getElement("#name").value.trim();
-            const email = getElement("#email").value.trim();
-
-            if (name === "" || email === "") {
+            const nameInput = getElement("#name").value.trim();
+            const emailInput = getElement("#email").value.trim();
+            if (nameInput === "" || emailInput === "") {
                 alert("Please enter both a name and an email.");
                 return;
             }
+            const newEmail = { name: nameInput, email: emailInput };
 
-            const newEmail = { name: name, email: email };
-
-            // make API POST request to add email to list
-            const response = await fetch(url, {
+            const postResponse = await fetch(domain, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newEmail)
             });
 
-            const json = await response.json();
+            const postData = await postResponse.json();
 
-            if (json.error) {
-                alert("Server error - " + json.error.message);
+            if (postData.error) {
+                alert("Server error - " + postData.error.message);
                 return;
             }
 
-            // make API GET request to display updated data
-            const getResponse = await fetch(url);
-            const getJson = await getResponse.json();
+            const refreshResponse = await fetch(domain);
+            const refreshData = await refreshResponse.json();
 
-            if (getJson.error)
-                alert("Server error - " + getJson.error.message);
-            else
-                displayEmails(getJson);
+            if (refreshData.error) {
+                alert("Server error - " + refreshData.error.message);
+            } else {
+                displayEmails(refreshData);
+            }
 
-        } catch(e) {
+        } catch (e) {
             alert(e.message);
         }
     });
 
-    getElement("#delete_email").addEventListener("click", async() => {
+    getElement("#delete_email").addEventListener("click", async () => {
         try {
-            // get selected email
-            const id = getElement("#emails").value;
-
-            if (id == "") {
-                alert ("Please select an email to delete.");
-                return;
-            } 
-
-            // make API DELETE request to delete email from list
-            const deleteUrl = url + id;
-            const response = await fetch(deleteUrl, {
-                method: "DELETE"
-            });
-
-            const json = await response.json();
-
-            if (json.error) {
-                alert("Server error - " + json.error.message);
+            const selectedUserId = getElement("#emails").value;
+            if (selectedUserId === "") {
+                alert("Please select an email to delete.");
                 return;
             }
 
-            // make API GET request to display updated data
-            const getResponse = await fetch(url);
-            const getJson = await getResponse.json();
+            const deleteEndpoint = domain + selectedUserId;
+            const deleteResponse = await fetch(deleteEndpoint, {
+                method: "DELETE"
+            });
 
-            if (getJson.error)
-                alert("Server error - " + getJson.error.message);
-            else
-                displayEmails(getJson);
+            const deleteData = await deleteResponse.json();
+            if (deleteData.error) {
+                alert("Server error - " + deleteData.error.message);
+                return;
+            }
 
-        } catch(e) {
+            const refreshResponse = await fetch(domain);
+            const refreshData = await refreshResponse.json();
+
+            if (refreshData.error) {
+                alert("Server error - " + refreshData.error.message);
+            } else {
+                displayEmails(refreshData);
+            }
+        } catch (e) {
             alert(e.message);
         }
     });

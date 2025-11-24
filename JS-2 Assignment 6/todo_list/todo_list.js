@@ -2,72 +2,51 @@
 
 const getElement = selector => document.querySelector(selector);
 
-document.addEventListener("DOMContentLoaded", () => {
-    const usersSelect = getElement("#users");
-    const listTableBody = getElement("#list tbody");
+const domain = "https://jsonplaceholder.typicode.com/users";
+const TODOS_URL = "https://jsonplaceholder.typicode.com/todos/?userId=";
 
-    const usersUrl = "https://jsonplaceholder.typicode.com/users";
-    const todosUrlBase = "https://jsonplaceholder.typicode.com/todos/?userId=";
+document.addEventListener("DOMContentLoaded", async () => {
+    const userDropdown = getElement("#users");
+    const todoTableBody = getElement("#list tbody");
 
-    const fetchJSON = async (url) => {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error ${response.status}`);
-        }
-        return response.json();
-    };
-
-    const loadUsers = async () => {
-        const users = await fetchJSON(usersUrl);
-
-        usersSelect.innerHTML = "";
-
+    try {
+        const usersResponse = await fetch(domain);
+        const users = await usersResponse.json();
+        userDropdown.innerHTML = "";
         for (const user of users) {
             const option = document.createElement("option");
             option.value = user.id;
             option.textContent = user.name;
-            usersSelect.appendChild(option);
+            userDropdown.appendChild(option);
         }
-    };
 
-    const displayTodos = (todos) => {
-        listTableBody.innerHTML = "";
+        await showTodo(userDropdown.value);
 
+        userDropdown.addEventListener("change", async () => {
+            await showTodo(userDropdown.value);
+        });
+    } catch (err) {
+        console.error(err);
+        alert("Error loading to do list.");
+    }
+
+    async function showTodo(userId) {
+        const todosResponse = await fetch(TODOS_URL + userId);
+        const todos = await todosResponse.json();
+        todoTableBody.innerHTML = "";
         for (const todo of todos) {
             const row = document.createElement("tr");
-
-            const itemCell = document.createElement("td");
-            itemCell.textContent = todo.title;
-
-            const completedCell = document.createElement("td");
-            completedCell.textContent = todo.completed ? "Yes" : "No";
-
-            row.appendChild(itemCell);
-            row.appendChild(completedCell);
-            listTableBody.appendChild(row);
+            const taskTitle = document.createElement("td");
+            taskTitle.textContent = todo.title;
+            const taskStatus = document.createElement("td");
+            if (todo.completed) {
+                taskStatus.textContent = "Yes";
+            } else {
+                taskStatus.textContent = "No";
+            }
+            row.appendChild(taskTitle);
+            row.appendChild(taskStatus);
+            todoTableBody.appendChild(row);
         }
-    };
-
-    const loadTodosForUser = async (userId) => {
-        const todos = await fetchJSON(todosUrlBase + userId);
-        displayTodos(todos);
-    };
-
-    const startup = async () => {
-        try {
-            await loadUsers();
-            const firstUserId = usersSelect.value;
-            await loadTodosForUser(firstUserId);
-t
-            usersSelect.addEventListener("change", async () => {
-                await loadTodosForUser(usersSelect.value);
-            });
-
-        } catch (err) {
-            console.error(err);
-            alert("Error loading users/todos. Check console.");
-        }
-    };
-
-    startup();
+    }
 });
